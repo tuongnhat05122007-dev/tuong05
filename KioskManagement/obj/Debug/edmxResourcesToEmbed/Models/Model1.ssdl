@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="KioskManagementDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Areas">
+    <Key>
+      <PropertyRef Name="AreaId" />
+    </Key>
+    <Property Name="AreaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AreaName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Location" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Contracts">
+    <Key>
+      <PropertyRef Name="ContractId" />
+    </Key>
+    <Property Name="ContractId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="KioskId" Type="int" Nullable="false" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EndDate" Type="date" Nullable="false" />
+    <Property Name="RentalPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Deposit" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" />
+    <Property Name="Address" Type="nvarchar" MaxLength="255" />
+    <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Kiosks">
+    <Key>
+      <PropertyRef Name="KioskId" />
+    </Key>
+    <Property Name="KioskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AreaId" Type="int" Nullable="false" />
+    <Property Name="ProjectId" Type="int" Nullable="false" />
+    <Property Name="KioskName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="AreaSize" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="RentalPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="ImageUrl" Type="nvarchar" MaxLength="255" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="KioskServices">
+    <Key>
+      <PropertyRef Name="KioskId" />
+      <PropertyRef Name="ServiceId" />
+    </Key>
+    <Property Name="KioskId" Type="int" Nullable="false" />
+    <Property Name="ServiceId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MaintenanceRequests">
+    <Key>
+      <PropertyRef Name="RequestId" />
+    </Key>
+    <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="KioskId" Type="int" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="RequestDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="PaymentId" />
+    </Key>
+    <Property Name="PaymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ContractId" Type="int" Nullable="false" />
+    <Property Name="PaymentDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="PaymentMethod" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="ProjectId" />
+    </Key>
+    <Property Name="ProjectId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProjectName" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Location" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EndDate" Type="date" />
+    <Property Name="Budget" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Status" Type="nvarchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Services">
+    <Key>
+      <PropertyRef Name="ServiceId" />
+    </Key>
+    <Property Name="ServiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ServiceName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar" MaxLength="255" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" />
+    <Property Name="Role" Type="nvarchar" MaxLength="20" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Contracts_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="Contracts" Type="Self.Contracts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Contracts">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Contracts_Kiosks">
+    <End Role="Kiosks" Type="Self.Kiosks" Multiplicity="1" />
+    <End Role="Contracts" Type="Self.Contracts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kiosks">
+        <PropertyRef Name="KioskId" />
+      </Principal>
+      <Dependent Role="Contracts">
+        <PropertyRef Name="KioskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kiosks_Areas">
+    <End Role="Areas" Type="Self.Areas" Multiplicity="1" />
+    <End Role="Kiosks" Type="Self.Kiosks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Areas">
+        <PropertyRef Name="AreaId" />
+      </Principal>
+      <Dependent Role="Kiosks">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Kiosks_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="Kiosks" Type="Self.Kiosks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjectId" />
+      </Principal>
+      <Dependent Role="Kiosks">
+        <PropertyRef Name="ProjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KioskServices_Kiosks">
+    <End Role="Kiosks" Type="Self.Kiosks" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="KioskServices" Type="Self.KioskServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kiosks">
+        <PropertyRef Name="KioskId" />
+      </Principal>
+      <Dependent Role="KioskServices">
+        <PropertyRef Name="KioskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_KioskServices_Services">
+    <End Role="Services" Type="Self.Services" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="KioskServices" Type="Self.KioskServices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Services">
+        <PropertyRef Name="ServiceId" />
+      </Principal>
+      <Dependent Role="KioskServices">
+        <PropertyRef Name="ServiceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MaintenanceRequests_Customers">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="MaintenanceRequests" Type="Self.MaintenanceRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="MaintenanceRequests">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MaintenanceRequests_Kiosks">
+    <End Role="Kiosks" Type="Self.Kiosks" Multiplicity="1" />
+    <End Role="MaintenanceRequests" Type="Self.MaintenanceRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kiosks">
+        <PropertyRef Name="KioskId" />
+      </Principal>
+      <Dependent Role="MaintenanceRequests">
+        <PropertyRef Name="KioskId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_Contracts">
+    <End Role="Contracts" Type="Self.Contracts" Multiplicity="1" />
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Contracts">
+        <PropertyRef Name="ContractId" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="ContractId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="KioskManagementDBModelStoreContainer">
+    <EntitySet Name="Areas" EntityType="Self.Areas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Contracts" EntityType="Self.Contracts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kiosks" EntityType="Self.Kiosks" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="KioskServices" EntityType="Self.KioskServices" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaintenanceRequests" EntityType="Self.MaintenanceRequests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Contracts_Customers" Association="Self.FK_Contracts_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Contracts" EntitySet="Contracts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Contracts_Kiosks" Association="Self.FK_Contracts_Kiosks">
+      <End Role="Kiosks" EntitySet="Kiosks" />
+      <End Role="Contracts" EntitySet="Contracts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kiosks_Areas" Association="Self.FK_Kiosks_Areas">
+      <End Role="Areas" EntitySet="Areas" />
+      <End Role="Kiosks" EntitySet="Kiosks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Kiosks_Projects" Association="Self.FK_Kiosks_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="Kiosks" EntitySet="Kiosks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KioskServices_Kiosks" Association="Self.FK_KioskServices_Kiosks">
+      <End Role="Kiosks" EntitySet="Kiosks" />
+      <End Role="KioskServices" EntitySet="KioskServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_KioskServices_Services" Association="Self.FK_KioskServices_Services">
+      <End Role="Services" EntitySet="Services" />
+      <End Role="KioskServices" EntitySet="KioskServices" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MaintenanceRequests_Customers" Association="Self.FK_MaintenanceRequests_Customers">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="MaintenanceRequests" EntitySet="MaintenanceRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MaintenanceRequests_Kiosks" Association="Self.FK_MaintenanceRequests_Kiosks">
+      <End Role="Kiosks" EntitySet="Kiosks" />
+      <End Role="MaintenanceRequests" EntitySet="MaintenanceRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_Contracts" Association="Self.FK_Payments_Contracts">
+      <End Role="Contracts" EntitySet="Contracts" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

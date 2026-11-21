@@ -1,0 +1,130 @@
+﻿
+@model KioskManagement.Models.Project
+
+@{
+    ViewBag.Title = "Chỉnh sửa dự án";
+}
+
+<h2 class="mt-4 mb-3">CHỈNH SỬA DỰ ÁN</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.ProjectId)
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ProjectName, "Tên dự án")
+
+            @Html.TextBoxFor(
+                     m => m.ProjectName,
+                     new { @class = "form-control" }
+                 )
+
+            @Html.ValidationMessageFor(
+                     m => m.ProjectName,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Location, "Địa điểm")
+
+            @Html.TextBoxFor(
+                     m => m.Location,
+                     new { @class = "form-control" }
+                 )
+
+            @Html.ValidationMessageFor(
+                     m => m.Location,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, "Ngày bắt đầu")
+
+            @Html.TextBoxFor(
+                     m => m.StartDate,
+                     "{0:yyyy-MM-dd}",
+                     new { @class = "form-control", type = "date" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate, "Ngày kết thúc")
+
+            @Html.TextBoxFor(
+                     m => m.EndDate,
+                     "{0:yyyy-MM-dd}",
+                     new { @class = "form-control", type = "date" }
+                 )
+
+            @Html.ValidationMessageFor(
+                     m => m.EndDate,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Budget, "Ngân sách (VNĐ)")
+
+            @Html.TextBoxFor(
+                     m => m.Budget,
+                     new
+                     {
+                         @class = "form-control",
+                         type = "number",
+                         min = "0",
+                         step = "0.01"
+                     }
+                 )
+
+            @Html.ValidationMessageFor(
+                     m => m.Budget,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Status, "Trạng thái")
+
+            @Html.DropDownListFor(
+                     m => m.Status,
+                     (SelectList)ViewBag.StatusList,
+                     new { @class = "form-control" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Description, "Mô tả")
+
+            @Html.TextAreaFor(
+                     m => m.Description,
+                     new { @class = "form-control", rows = "4" }
+                 )
+        </div>
+
+        <button type="submit" class="btn btn-warning">
+            Lưu thay đổi
+        </button>
+
+        @Html.ActionLink(
+                 "Quay lại",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary" }
+             )
+
+    </div>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

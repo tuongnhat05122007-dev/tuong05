@@ -1,0 +1,261 @@
+﻿
+@model KioskManagement.Models.Kiosk
+
+@{
+    ViewBag.Title = "Chi tiết Kios";
+}
+
+<style>
+    /* TIEU DE */
+    .details-title {
+        color: #173B5E;
+        font-weight: bold;
+        margin-bottom: 25px;
+    }
+
+    /* THE CHI TIET */
+    .kiosk-details-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+        overflow: hidden;
+    }
+
+    .kiosk-details-header {
+        background: linear-gradient(90deg, #10243A, #173B5E);
+        color: white;
+        padding: 16px 22px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .kiosk-details-body {
+        padding: 25px;
+    }
+
+    /* THONG TIN KIOS */
+    .info-row {
+        padding: 12px 5px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .info-label {
+        color: #173B5E;
+        font-weight: bold;
+    }
+
+    .info-value {
+        color: #444;
+    }
+
+    /* KHUNG HINH ANH */
+    .kiosk-image-box {
+        background: #f5f8fc;
+        border: 1px solid #e1e8f0;
+        border-radius: 12px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .kiosk-image {
+        width: 100%;
+        max-width: 550px;
+        max-height: 350px;
+        object-fit: contain;
+        border-radius: 10px;
+        background: white;
+    }
+
+    .no-image {
+        color: #888;
+        padding: 50px 10px;
+    }
+
+    /* NUT CHUC NANG */
+    .btn-back {
+        background: #173B5E;
+        color: white !important;
+        border: none;
+    }
+
+        .btn-back:hover {
+            background: #10243A;
+            color: white !important;
+        }
+
+    .btn-edit {
+        background: #F0A500;
+        color: #172B40 !important;
+        border: none;
+    }
+
+        .btn-edit:hover {
+            background: #D99000;
+            color: white !important;
+        }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 13px;
+        border-radius: 20px;
+        background: #e2f3e9;
+        color: #198754;
+        font-weight: bold;
+    }
+</style>
+
+<h2 class="text-center details-title">
+    CHI TIẾT KIOS
+</h2>
+
+<div class="card kiosk-details-card">
+
+    <div class="kiosk-details-header">
+        <i class="fas fa-store"></i>
+        THÔNG TIN KIOS
+    </div>
+
+    <div class="card-body kiosk-details-body">
+
+        <div class="row">
+
+            <!-- COT THONG TIN -->
+            <div class="col-md-7">
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Mã Kios
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @Model.KioskId
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Tên Kios
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @Model.KioskName
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Khu vực
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @(Model.Area != null ? Model.Area.AreaName : "Chưa xác định")
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Dự án
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @(Model.Project != null ? Model.Project.ProjectName : "Chưa xác định")
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Diện tích
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @Model.AreaSize
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Giá thuê
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @Model.RentalPrice.ToString("N0") VNĐ
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Trạng thái
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        <span class="status-badge">
+                            @Model.Status
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row info-row">
+                    <div class="col-sm-4 info-label">
+                        Mô tả
+                    </div>
+                    <div class="col-sm-8 info-value">
+                        @(string.IsNullOrEmpty(Model.Description)
+                            ? "Chưa có mô tả"
+                            : Model.Description)
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- COT HINH ANH -->
+            <div class="col-md-5 mt-3 mt-md-0">
+
+                <h5 class="info-label mb-3">
+                    HÌNH ẢNH KIOS
+                </h5>
+
+                <div class="kiosk-image-box">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.ImageUrl))
+                    {
+                        <img src="@Url.Content(Model.ImageUrl)"
+                             alt="Hình ảnh @Model.KioskName"
+                             class="kiosk-image"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+
+                        <div class="no-image" style="display:none;">
+                            Không thể tải hình ảnh.
+                            <br />
+                            Vui lòng kiểm tra đường dẫn ảnh.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="no-image">
+                            <i class="fas fa-image fa-3x mb-3"></i>
+                            <p>Kios chưa có hình ảnh</p>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- CAC NUT CHUC NANG -->
+        <div class="d-flex flex-wrap" style="gap:10px;">
+
+            @Html.ActionLink(
+                     "Chỉnh sửa",
+                     "Edit",
+                     new { id = Model.KioskId },
+                     new { @class = "btn btn-edit" }
+                 )
+
+            @Html.ActionLink(
+                     "Quay lại",
+                     "Index",
+                     null,
+                     new { @class = "btn btn-back" }
+                 )
+
+        </div>
+
+    </div>
+</div>

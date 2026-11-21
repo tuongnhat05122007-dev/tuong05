@@ -1,0 +1,108 @@
+﻿
+@model KioskManagement.Models.Area
+
+@{
+    ViewBag.Title = "Chi tiết khu vực";
+}
+
+<h2 class="mt-4 mb-3">CHI TIẾT KHU VỰC</h2>
+
+<div class="card mb-4">
+    <div class="card-header bg-dark text-white">
+        Thông tin khu vực
+    </div>
+
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">Mã khu vực</dt>
+            <dd class="col-sm-9">@Model.AreaId</dd>
+
+            <dt class="col-sm-3">Tên khu vực</dt>
+            <dd class="col-sm-9">@Model.AreaName</dd>
+
+            <dt class="col-sm-3">Địa điểm</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">
+                @(string.IsNullOrEmpty(Model.Description)
+                    ? "Chưa có mô tả"
+                    : Model.Description)
+            </dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge badge-success">
+                        Đang hoạt động
+                    </span>
+                }
+                else
+                {
+                    <span class="badge badge-secondary">
+                        Ngừng hoạt động
+                    </span>
+                }
+            </dd>
+
+        </dl>
+
+    </div>
+</div>
+
+<h4>Danh sách Kios thuộc khu vực</h4>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã Kios</th>
+            <th>Tên Kios</th>
+            <th>Diện tích</th>
+            <th>Giá thuê</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model.Kiosks != null && Model.Kiosks.Any())
+        {
+            foreach (var kiosk in Model.Kiosks)
+            {
+                <tr>
+                    <td>@kiosk.KioskId</td>
+                    <td>@kiosk.KioskName</td>
+                    <td>@kiosk.AreaSize m²</td>
+                    <td>@kiosk.RentalPrice.ToString("N0") VNĐ</td>
+                    <td>@kiosk.Status</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">
+                    Khu vực chưa có Kios.
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@Html.ActionLink(
+    "Chỉnh sửa",
+    "Edit",
+    new { id = Model.AreaId },
+    new { @class = "btn btn-warning" }
+)
+
+@Html.ActionLink(
+    "Quay lại",
+    "Index",
+    null,
+    new { @class = "btn btn-secondary" }
+)

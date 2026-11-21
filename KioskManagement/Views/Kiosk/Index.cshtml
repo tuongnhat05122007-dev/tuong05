@@ -1,0 +1,123 @@
+﻿@model IEnumerable<KioskManagement.Models.Kiosk>
+
+@{
+    ViewBag.Title = "Quản lý Kios";
+}
+
+<h2 class="text-center mb-4">QUẢN LÝ KIOS</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink(
+            " + Thêm Kios mới",
+            "Create",
+            null,
+            new { @class = "btn btn-primary" }
+        )
+</p>
+
+@using (Html.BeginForm("Index", "Kiosk", FormMethod.Get))
+{
+    <div class="form-inline mb-3">
+        <input type="text"
+               name="search"
+               value="@ViewBag.Search"
+               class="form-control mr-2"
+               placeholder="Nhập tên kios cần tìm..." />
+
+        <button type="submit" class="btn btn-success">
+            Tìm kiếm
+        </button>
+
+        @Html.ActionLink(
+                 "Làm mới",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary ml-2" }
+             )
+    </div>
+}
+
+<table class="table table-bordered table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã kios</th>
+            <th>Tên kios</th>
+            <th>Khu vực</th>
+            <th>Dự án</th>
+            <th>Diện tích</th>
+            <th>Giá thuê</th>
+            <th>Trạng thái</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.KioskId</td>
+                    <td>@item.KioskName</td>
+                    <td>
+                        @(item.Area != null ? item.Area.AreaName : "")
+                    </td>
+                    <td>
+                        @(item.Project != null ? item.Project.ProjectName : "")
+                    </td>
+                    <td>@item.AreaSize</td>
+                    <td>@item.RentalPrice.ToString("N0")</td>
+                    <td>@item.Status</td>
+                    <td>
+                        <div class="d-flex flex-wrap" style="gap:5px;">
+
+                            @Html.ActionLink(
+                                     "Chi tiết",
+                                     "Details",
+                                     new { id = item.KioskId },
+                                     new { @class = "btn btn-info btn-sm" }
+                                 )
+
+                            @Html.ActionLink(
+                                     "Sửa",
+                                     "Edit",
+                                     new { id = item.KioskId },
+                                     new { @class = "btn btn-warning btn-sm" }
+                                 )
+
+                            @Html.ActionLink(
+                                     "Xóa",
+                                     "Delete",
+                                     new { id = item.KioskId },
+                                     new { @class = "btn btn-danger btn-sm" }
+                                 )
+
+                        </div>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">
+                    Không tìm thấy kios nào.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

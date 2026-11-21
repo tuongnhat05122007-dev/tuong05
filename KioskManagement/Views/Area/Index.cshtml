@@ -1,0 +1,127 @@
+﻿
+@model IEnumerable<KioskManagement.Models.Area>
+
+@{
+    ViewBag.Title = "Quản lý khu vực";
+}
+
+<h2 class="mt-4 mb-3">QUẢN LÝ KHU VỰC</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink(
+            "Thêm khu vực mới",
+            "Create",
+            null,
+            new { @class = "btn btn-primary" }
+        )
+</p>
+
+@using (Html.BeginForm("Index", "Area", FormMethod.Get))
+{
+    <div class="form-inline mb-3">
+        <input type="text"
+               name="search"
+               class="form-control mr-2"
+               placeholder="Nhập tên hoặc địa điểm khu vực..."
+               value="@Request.QueryString["search"]" />
+
+        <button type="submit" class="btn btn-success">
+            Tìm kiếm
+        </button>
+
+        @Html.ActionLink(
+                 "Làm mới",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary ml-2" }
+             )
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã khu vực</th>
+            <th>Tên khu vực</th>
+            <th>Địa điểm</th>
+            <th>Số lượng Kios</th>
+            <th>Trạng thái</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.AreaId</td>
+                    <td>@item.AreaName</td>
+                    <td>@item.Location</td>
+                    <td>@item.Kiosks.Count</td>
+
+                    <td>
+                        @if (item.IsActive)
+                        {
+                            <span class="badge badge-success text-dark">
+                                Đang hoạt động
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary text-dark">
+                                Ngừng hoạt động
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+                        @Html.ActionLink(
+                                 "Chi tiết",
+                                 "Details",
+                                 new { id = item.AreaId },
+                                 new { @class = "btn btn-info btn-sm" }
+                             )
+
+                        @Html.ActionLink(
+                                 "Sửa",
+                                 "Edit",
+                                 new { id = item.AreaId },
+                                 new { @class = "btn btn-warning btn-sm" }
+                             )
+
+                        @Html.ActionLink(
+                                 "Xóa",
+                                 "Delete",
+                                 new { id = item.AreaId },
+                                 new { @class = "btn btn-danger btn-sm" }
+                             )
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">
+                    Không tìm thấy khu vực nào.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

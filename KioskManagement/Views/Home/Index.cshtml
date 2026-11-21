@@ -1,0 +1,843 @@
+﻿
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+<style>
+    /* TIEU DE DASHBOARD */
+    .dashboard-title {
+        margin-bottom: 25px;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    /* CAC THE THONG KE */
+    .dashboard-card {
+        border-radius: 10px;
+        padding: 22px;
+        margin-bottom: 20px;
+        color: white;
+        min-height: 145px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+        transition: transform 0.2s;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .dashboard-card h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 12px 0 5px;
+            color: white;
+        }
+
+        .dashboard-card p {
+            margin: 0;
+            font-size: 14px;
+            color: white;
+        }
+
+        .dashboard-card .card-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    .card-icon {
+        font-size: 28px;
+        float: right;
+        opacity: 0.85;
+    }
+
+    .card-blue {
+        background: linear-gradient(135deg, #2980b9, #3498db);
+    }
+
+    .card-green {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+    }
+
+    .card-orange {
+        background: linear-gradient(135deg, #f2994a, #f2c94c);
+    }
+
+    .card-red {
+        background: linear-gradient(135deg, #eb3349, #f45c43);
+    }
+
+    /* KHU VUC BIEU DO */
+    .chart-panel {
+        margin-bottom: 25px;
+        border-radius: 6px;
+    }
+
+        .chart-panel .panel-heading {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+    .chart-container {
+        position: relative;
+        height: 300px;
+    }
+
+    .dashboard-section {
+        margin-top: 25px;
+        margin-bottom: 15px;
+        color: #2c3e50;
+        font-weight: bold;
+    }
+</style>
+
+
+<div class="container-fluid">
+
+    <div style="display:flex; justify-content:flex-end; align-items:center; gap:15px; margin-bottom:15px;">
+        <span>
+            Xin chào, <strong>@Session["FullName"]</strong>
+            (@Session["Role"])
+        </span>
+
+        @using (Html.BeginForm("Logout", "Login", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="btn btn-danger">
+                Đăng xuất
+            </button>
+        }
+    </div>
+
+    @if (Session["Role"] != null &&
+        Session["Role"].ToString() == "Admin")
+    {
+        <div style="margin-bottom:20px;">
+            <a href="@Url.Action("Index", "User")"
+               class="btn btn-primary">
+                <i class="glyphicon glyphicon-user"></i>
+                Quản lý tài khoản
+            </a>
+        </div>
+    }
+
+    <!-- TIEU DE -->
+    <h2 class="dashboard-title">
+        TỔNG QUAN HỆ THỐNG QUẢN LÝ KIOSK
+    </h2>
+
+
+    <!-- ================================= -->
+    <!-- 1. CAC THE THONG KE -->
+    <!-- ================================= -->
+
+    <div class="row">
+
+        <!-- TONG SO KIOSK -->
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-blue">
+                <span class="card-icon">&#127970;</span>
+
+                <div class="card-title">
+                    Tổng số Kiosk
+                </div>
+
+                <h2>@ViewBag.TotalKiosks</h2>
+
+                <p>Kiosk trong hệ thống</p>
+            </div>
+        </div>
+
+
+        <!-- TONG KHACH HANG -->
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-green">
+                <span class="card-icon">&#128101;</span>
+
+                <div class="card-title">
+                    Tổng khách hàng
+                </div>
+
+                <h2>@ViewBag.TotalCustomers</h2>
+
+                <p>Khách hàng đã đăng ký</p>
+            </div>
+        </div>
+
+
+        <!-- TONG HOP DONG -->
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-orange">
+                <span class="card-icon">&#128203;</span>
+
+                <div class="card-title">
+                    Tổng hợp đồng
+                </div>
+
+                <h2>@ViewBag.TotalContracts</h2>
+
+                <p>Hợp đồng trong hệ thống</p>
+            </div>
+        </div>
+
+
+        <!-- HOP DONG DANG HOAT DONG -->
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-red">
+                <span class="card-icon">&#9989;</span>
+
+                <div class="card-title">
+                    Hợp đồng hoạt động
+                </div>
+
+                <h2>@ViewBag.ActiveContracts</h2>
+
+                <p>Hợp đồng đang có hiệu lực</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- 2. THONG KE BAO TRI -->
+    <!-- ================================= -->
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-blue">
+                <span class="card-icon">&#128295;</span>
+
+                <div class="card-title">
+                    Tổng yêu cầu bảo trì
+                </div>
+
+                <h2>@ViewBag.TotalMaintenance</h2>
+
+                <p>Tất cả yêu cầu bảo trì</p>
+            </div>
+        </div>
+
+
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-orange">
+                <span class="card-icon">&#9203;</span>
+
+                <div class="card-title">
+                    Bảo trì đang chờ
+                </div>
+
+                <h2>@ViewBag.PendingMaintenance</h2>
+
+                <p>Yêu cầu chưa xử lý</p>
+            </div>
+        </div>
+
+
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-green">
+                <span class="card-icon">&#128176;</span>
+
+                <div class="card-title">
+                    Tổng doanh thu
+                </div>
+
+                <h2 style="font-size:24px;">
+                    @(((decimal?)ViewBag.TotalRevenue ?? 0).ToString("N0")) đ
+                </h2>
+                <p>Tổng thanh toán thành công</p>
+            </div>
+        </div>
+
+
+        <div class="col-md-3 col-sm-6">
+            <div class="dashboard-card card-red">
+                <span class="card-icon">&#128179;</span>
+
+                <div class="card-title">
+                    Tổng thanh toán
+                </div>
+
+                <h2>@ViewBag.TotalPayments</h2>
+
+                <p>Số giao dịch thanh toán</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- 3. BANG THONG KE TRANG THAI KIOSK -->
+    <!-- ================================= -->
+
+    <h3 class="dashboard-section">
+        THỐNG KÊ TRẠNG THÁI KIOSK
+    </h3>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Chi tiết Kiosk</strong>
+        </div>
+
+        <div class="panel-body">
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                    <tr style="background-color:#343a40;color:white;">
+                        <th>Trạng thái</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Đang trống</td>
+                        <td>@ViewBag.AvailableKiosks</td>
+                    </tr>
+
+                    <tr>
+                        <td>Đang cho thuê</td>
+                        <td>@ViewBag.RentedKiosks</td>
+                    </tr>
+
+                    <tr>
+                        <td>Đang bảo trì</td>
+                        <td>@ViewBag.MaintenanceKiosks</td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- 4. BIEU DO TRANG THAI KIOSK -->
+    <!-- ================================= -->
+
+    <h3 class="dashboard-section">
+        BIỂU ĐỒ THỐNG KÊ KIOSK
+    </h3>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="panel panel-default chart-panel">
+
+                <div class="panel-heading">
+                    Thống kê Kiosk theo trạng thái
+                </div>
+
+                <div class="panel-body">
+                    <div class="chart-container">
+                        <canvas id="kioskChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- THONG KE HOP DONG -->
+        <div class="col-md-6">
+            <div class="panel panel-default chart-panel">
+
+                <div class="panel-heading">
+                    Thống kê hợp đồng
+                </div>
+
+                <div class="panel-body">
+                    <div class="chart-container">
+                        <canvas id="contractChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- 5. BIEU DO DOANH THU -->
+    <!-- ================================= -->
+
+    <h3 class="dashboard-section">
+        THỐNG KÊ DOANH THU
+    </h3>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="panel panel-default chart-panel">
+
+                <div class="panel-heading">
+                    Doanh thu theo phương thức thanh toán
+                </div>
+
+                <div class="panel-body">
+
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- THONG KE HOP DONG -->
+        <div class="col-md-6">
+
+            <div class="panel panel-default chart-panel">
+
+                <div class="panel-heading">
+                    Tổng quan hợp đồng
+                </div>
+
+                <div class="panel-body">
+
+                    <table class="table table-bordered">
+
+                        <tbody>
+                            <tr>
+                                <td>Tổng hợp đồng</td>
+                                <td>@ViewBag.TotalContracts</td>
+                            </tr>
+
+                            <tr>
+                                <td>Đang chờ</td>
+                                <td>@ViewBag.PendingContracts</td>
+                            </tr>
+
+                            <tr>
+                                <td>Đang hoạt động</td>
+                                <td>@ViewBag.ActiveContracts</td>
+                            </tr>
+
+                            <tr>
+                                <td>Đã hoàn thành</td>
+                                <td>@ViewBag.CompletedContracts</td>
+                            </tr>
+
+                            <tr>
+                                <td>Đã hủy</td>
+                                <td>@ViewBag.CancelledContracts</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- 6. 5 YEU CAU BAO TRI MOI NHAT -->
+<!-- ================================= -->
+
+<h3 class="dashboard-section">
+    5 YÊU CẦU BẢO TRÌ MỚI NHẤT
+</h3>
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <strong>Danh sách yêu cầu bảo trì gần đây</strong>
+
+        <span class="pull-right">
+            @Html.ActionLink(
+                          "Xem tất cả",
+                          "Index",
+                          "MaintenanceRequest",
+                          null,
+                          new { @class = "btn btn-primary btn-xs" }
+                      )
+        </span>
+
+        <div style="clear:both;"></div>
+    </div>
+
+    <div class="panel-body table-responsive">
+
+        <table class="table table-bordered table-striped">
+
+            <thead>
+                <tr style="background-color:#343a40;color:white;">
+                    <th>Mã yêu cầu</th>
+                    <th>Kiosk</th>
+                    <th>Khách hàng</th>
+                    <th>Ngày yêu cầu</th>
+                    <th>Mô tả</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (ViewBag.LatestMaintenanceRequests != null
+                    && ViewBag.LatestMaintenanceRequests.Count > 0)
+                {
+                    foreach (var item in ViewBag.LatestMaintenanceRequests)
+                    {
+                        <tr>
+                            <td>@item.RequestId</td>
+
+                            <td>@item.Kiosk.KioskName</td>
+
+                            <td>@item.Customer.FullName</td>
+
+                            <td>
+                                @item.RequestDate.ToString("dd/MM/yyyy")
+                            </td>
+
+                            <td>@item.Description</td>
+
+                            <td>
+                                @if (item.Status == "Pending")
+                                {
+                                    <span class="label label-warning">
+                                        Đang chờ
+                                    </span>
+                                }
+                                else if (item.Status == "InProgress")
+                                {
+                                    <span class="label label-info">
+                                        Đang xử lý
+                                    </span>
+                                }
+                                else if (item.Status == "Completed")
+                                {
+                                    <span class="label label-success">
+                                        Hoàn thành
+                                    </span>
+                                }
+                                else if (item.Status == "Cancelled")
+                                {
+                                    <span class="label label-danger">
+                                        Đã hủy
+                                    </span>
+                                }
+                                else
+                                {
+                                    @item.Status
+                                }
+                            </td>
+
+                            <td>
+                                @Html.ActionLink(
+                                              "Chi tiết",
+                                              "Details",
+                                              "MaintenanceRequest",
+                                              new { id = item.RequestId },
+                                              new { @class = "btn btn-info btn-sm" }
+                                          )
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Chưa có yêu cầu bảo trì nào.
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+<!-- ================================= -->
+<!-- 8. THONG KE KIOSK THEO KHU VUC -->
+<!-- ================================= -->
+
+<h3 class="dashboard-section">
+    THỐNG KÊ KIOSK THEO KHU VỰC
+</h3>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <strong>Số lượng Kiosk tại từng khu vực</strong>
+            </div>
+
+            <div class="panel-body">
+                <div class="chart-container">
+                    <canvas id="areaChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ================================= -->
+<!-- 9. THONG KE KIOSK THEO DU AN -->
+<!-- ================================= -->
+
+<h3 class="dashboard-section">
+    THỐNG KÊ KIOSK THEO DỰ ÁN
+</h3>
+
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <strong>Số lượng Kiosk thuộc từng dự án</strong>
+            </div>
+
+            <div class="panel-body">
+                <div class="chart-container">
+                    <canvas id="projectChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- ================================= -->
+<!-- 6. THU VIEN CHART.JS -->
+<!-- ================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+
+<!-- ================================= -->
+<!-- 7. KHOI TAO CAC BIEU DO -->
+<!-- ================================= -->
+
+<script>
+
+    // BIEU DO KIOSK
+    new Chart(document.getElementById('kioskChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Đang trống',
+                'Đang cho thuê',
+                'Đang bảo trì'
+            ],
+
+            datasets: [{
+                data: [
+                    @ViewBag.AvailableKiosks,
+                    @ViewBag.RentedKiosks,
+                    @ViewBag.MaintenanceKiosks
+                ],
+
+                backgroundColor: [
+                    '#28a745',
+                    '#007bff',
+                    '#ffc107'
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+
+    // BIEU DO HOP DONG
+    new Chart(document.getElementById('contractChart'), {
+        type: 'bar',
+
+        data: {
+            labels: [
+                'Đang chờ',
+                'Đang hoạt động',
+                'Hoàn thành',
+                'Đã hủy'
+            ],
+
+            datasets: [{
+                label: 'Số lượng hợp đồng',
+
+                data: [
+                    @ViewBag.PendingContracts,
+                    @ViewBag.ActiveContracts,
+                    @ViewBag.CompletedContracts,
+                    @ViewBag.CancelledContracts
+                ],
+
+                backgroundColor: [
+                    '#f0ad4e',
+                    '#5cb85c',
+                    '#337ab7',
+                    '#d9534f'
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+
+    // BIEU DO DOANH THU
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'doughnut',
+
+        data: {
+            labels: [
+                'Tiền mặt',
+                'Chuyển khoản',
+                'Trực tuyến'
+            ],
+
+            datasets: [{
+                data: [
+                    @ViewBag.CashRevenue,
+                    @ViewBag.BankRevenue,
+                    @ViewBag.OnlineRevenue
+                ],
+
+                backgroundColor: [
+                    '#28a745',
+                    '#007bff',
+                    '#f0ad4e'
+                ]
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // =====================================
+    // BIEU DO KIOSK THEO KHU VUC
+    // =====================================
+
+    var areaData = @Html.Raw(Json.Encode(ViewBag.KiosksByArea));
+
+    new Chart(document.getElementById('areaChart'), {
+        type: 'bar',
+
+        data: {
+            labels: areaData.map(x => x.AreaName),
+
+            datasets: [{
+                label: 'Số lượng Kiosk',
+
+                data: areaData.map(x => x.Total),
+
+                backgroundColor: '#3498db'
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+
+    // =====================================
+    // BIEU DO KIOSK THEO DU AN
+    // =====================================
+
+    var projectData = @Html.Raw(Json.Encode(ViewBag.KiosksByProject));
+
+    new Chart(document.getElementById('projectChart'), {
+        type: 'bar',
+
+        data: {
+            labels: projectData.map(x => x.ProjectName),
+
+            datasets: [{
+                label: 'Số lượng Kiosk',
+
+                data: projectData.map(x => x.Total),
+
+                backgroundColor: '#2ecc71'
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+</script>

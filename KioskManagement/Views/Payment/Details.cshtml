@@ -1,0 +1,136 @@
+﻿
+@model KioskManagement.Models.Payment
+
+@{
+    ViewBag.Title = "Chi tiết thanh toán";
+}
+
+<h2 class="mt-4 mb-3">CHI TIẾT THANH TOÁN</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+                <strong>THÔNG TIN THANH TOÁN</strong>
+            </div>
+
+            <div class="panel-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th style="width: 35%;">Mã thanh toán</th>
+                        <td>@Model.PaymentId</td>
+                    </tr>
+
+                    <tr>
+                        <th>Mã hợp đồng</th>
+                        <td>@Model.ContractId</td>
+                    </tr>
+
+                    <tr>
+                        <th>Khách hàng</th>
+                        <td>@Model.Contract.Customer.FullName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Kiosk</th>
+                        <td>@Model.Contract.Kiosk.KioskName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Ngày thanh toán</th>
+                        <td>
+                            @Model.PaymentDate.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Số tiền thanh toán</th>
+                        <td>
+                            <strong>
+                                @Model.Amount.ToString("N0") VNĐ
+                            </strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Phương thức thanh toán</th>
+                        <td>
+                            @switch (Model.PaymentMethod)
+                            {
+                                case "Cash":
+                                    <span>Tiền mặt</span>
+                                    break;
+
+                                case "BankTransfer":
+                                    <span>Chuyển khoản</span>
+                                    break;
+
+                                case "Online":
+                                    <span>Thanh toán trực tuyến</span>
+                                    break;
+
+                                default:
+                                    <span>@Model.PaymentMethod</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Trạng thái</th>
+                        <td>
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    <span class="label label-warning">
+                                        Đang chờ
+                                    </span>
+                                    break;
+
+                                case "Success":
+                                    <span class="label label-success">
+                                        Thành công
+                                    </span>
+                                    break;
+
+                                case "Failed":
+                                    <span class="label label-danger">
+                                        Thất bại
+                                    </span>
+                                    break;
+
+                                default:
+                                    <span>@Model.Status</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+
+                </table>
+
+                <div class="mt-3">
+
+                    @Html.ActionLink(
+                             "Chỉnh sửa",
+                             "Edit",
+                             new { id = Model.PaymentId },
+                             new { @class = "btn btn-warning" })
+
+                    @Html.ActionLink(
+                             "Quay lại",
+                             "Index",
+                             null,
+                             new { @class = "btn btn-default" })
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

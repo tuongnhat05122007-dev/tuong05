@@ -1,0 +1,190 @@
+﻿
+@model IEnumerable<KioskManagement.Models.User>
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+}
+
+<div class="container-fluid">
+
+    <!-- TIEU DE -->
+    <h2 style="font-weight:bold; color:#2c3e50; margin-bottom:20px;">
+        QUẢN LÝ TÀI KHOẢN
+    </h2>
+
+    <!-- THONG BAO THANH CONG -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <!-- NUT THEM TAI KHOAN -->
+    <div style="margin:20px 0;">
+        <a href="@Url.Action("Create", "User")"
+           class="btn btn-success">
+            <i class="glyphicon glyphicon-plus"></i>
+            Thêm tài khoản
+        </a>
+    </div>
+
+    <!-- FORM TIM KIEM -->
+    @using (Html.BeginForm("Index", "User", FormMethod.Get))
+    {
+        <div class="row" style="margin-bottom:20px;">
+
+            <div class="col-md-5">
+                <input type="text"
+                       name="search"
+                       value="@Request.QueryString["search"]"
+                       class="form-control"
+                       placeholder="Nhập tên đăng nhập, họ tên, email hoặc vai trò..." />
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-search"></i>
+                    Tìm kiếm
+                </button>
+
+                <a href="@Url.Action("Index", "User")"
+                   class="btn btn-default">
+                    Làm mới
+                </a>
+            </div>
+
+        </div>
+    }
+
+    <!-- BANG DANH SACH -->
+    <div class="panel panel-default">
+
+        <div class="panel-heading">
+            <strong>Danh sách tài khoản hệ thống</strong>
+        </div>
+
+        <div class="panel-body" style="overflow-x:auto;">
+
+            <table class="table table-bordered table-striped table-hover">
+
+                <thead style="background-color:#2c3e50; color:white;">
+                    <tr>
+                        <th>Mã TK</th>
+                        <th>Tên đăng nhập</th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Vai trò</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.UserId</td>
+
+                                <td>
+                                    <strong>@user.Username</strong>
+                                </td>
+
+                                <td>@user.FullName</td>
+
+                                <td>@user.Email</td>
+
+                                <td>
+                                    @(string.IsNullOrEmpty(user.Phone)
+                                        ? "Chưa cập nhật"
+                                        : user.Phone)
+                                </td>
+
+                                <td>
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <span class="label label-danger">
+                                            Admin
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-primary">
+                                            Staff
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (user.IsActive)
+                                    {
+                                        <span class="label label-success">
+                                            Hoạt động
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="label label-default">
+                                            Đã khóa
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @user.CreatedAt.ToString("dd/MM/yyyy")
+                                </td>
+
+                                <td>
+                                    <a href="@Url.Action("Edit", "User", new { id = user.UserId })"
+                                       class="btn btn-warning btn-sm">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                        Sửa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="9"
+                                class="text-center"
+                                style="padding:20px;">
+                                Không tìm thấy tài khoản nào!
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <!-- TONG SO TAI KHOAN -->
+            <div style="text-align:right; font-weight:bold;">
+                Tổng số tài khoản:
+                @(Model == null ? 0 : Model.Count())
+            </div>
+
+        </div>
+    </div>
+
+    <!-- NUT QUAY LAI -->
+    <a href="@Url.Action("Index", "Home")"
+       class="btn btn-default">
+        <i class="glyphicon glyphicon-arrow-left"></i>
+        Quay lại trang chủ
+    </a>
+
+</div>

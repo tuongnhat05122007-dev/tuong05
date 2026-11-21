@@ -1,0 +1,93 @@
+﻿
+@model KioskManagement.Models.Area
+
+@{
+    ViewBag.Title = "Chỉnh sửa khu vực";
+}
+
+<h2 class="mt-4 mb-3">CHỈNH SỬA KHU VỰC</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.AreaId)
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(
+                     model => model.AreaName,
+                     "Tên khu vực"
+                 )
+
+            @Html.TextBoxFor(
+                     model => model.AreaName,
+                     new { @class = "form-control" }
+                 )
+
+            @Html.ValidationMessageFor(
+                     model => model.AreaName,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(
+                     model => model.Location,
+                     "Địa điểm"
+                 )
+
+            @Html.TextBoxFor(
+                     model => model.Location,
+                     new { @class = "form-control" }
+                 )
+
+            @Html.ValidationMessageFor(
+                     model => model.Location,
+                     "",
+                     new { @class = "text-danger" }
+                 )
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(
+                     model => model.Description,
+                     "Mô tả"
+                 )
+
+            @Html.TextAreaFor(
+                     model => model.Description,
+                     new
+                     {
+                         @class = "form-control",
+                         rows = "4"
+                     }
+                 )
+        </div>
+
+        <div class="form-group">
+            <label>
+                @Html.CheckBoxFor(model => model.IsActive)
+                Khu vực đang hoạt động
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-warning">
+            Lưu thay đổi
+        </button>
+
+        @Html.ActionLink(
+                 "Quay lại",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary" }
+             )
+
+    </div>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

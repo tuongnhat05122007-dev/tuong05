@@ -1,0 +1,129 @@
+﻿
+@model KioskManagement.Models.Payment
+
+@{
+    ViewBag.Title = "Chỉnh sửa thanh toán";
+}
+
+<h2 class="mt-4 mb-3">CHỈNH SỬA THANH TOÁN</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <strong>THÔNG TIN THANH TOÁN</strong>
+            </div>
+
+            <div class="panel-body">
+
+                @using (Html.BeginForm("Edit", "Payment", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(m => m.PaymentId)
+
+                    @Html.ValidationSummary(false, "",
+                             new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ContractId, "Hợp đồng")
+
+                        @Html.DropDownListFor(
+                                 m => m.ContractId,
+                                 (SelectList)ViewBag.ContractId,
+                                 "-- Chọn hợp đồng --",
+                                 new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(
+                                 m => m.ContractId, "",
+                                 new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PaymentDate, "Ngày thanh toán")
+
+                        @Html.TextBoxFor(
+                                 m => m.PaymentDate,
+                                 "{0:yyyy-MM-ddTHH:mm}",
+                                 new
+                                 {
+                                     @class = "form-control",
+                                     type = "datetime-local"
+                                 })
+
+                        @Html.ValidationMessageFor(
+                                 m => m.PaymentDate, "",
+                                 new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Amount, "Số tiền thanh toán (VNĐ)")
+
+                        @Html.TextBoxFor(
+                                 m => m.Amount,
+                                 new
+                                 {
+                                     @class = "form-control",
+                                     type = "number",
+                                     min = "1",
+                                     step = "1000"
+                                 })
+
+                        @Html.ValidationMessageFor(
+                                 m => m.Amount, "",
+                                 new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.PaymentMethod, "Phương thức thanh toán")
+
+                        @Html.DropDownListFor(
+                                 m => m.PaymentMethod,
+                                 (SelectList)ViewBag.MethodList,
+                                 "-- Chọn phương thức --",
+                                 new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(
+                                 m => m.PaymentMethod, "",
+                                 new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Status, "Trạng thái thanh toán")
+
+                        @Html.DropDownListFor(
+                                 m => m.Status,
+                                 (SelectList)ViewBag.PaymentStatusList,
+                                 "-- Chọn trạng thái --",
+                                 new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(
+                                 m => m.Status, "",
+                                 new { @class = "text-danger" })
+                    </div>
+
+                    <hr />
+
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-floppy-disk"></span>
+                        Lưu thay đổi
+                    </button>
+
+                    @Html.ActionLink(
+                             "Quay lại",
+                             "Index",
+                             null,
+                             new { @class = "btn btn-default" })
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,53 @@
+﻿
+@model KioskManagement.Models.Contract
+
+@{
+    ViewBag.Title = "Xóa hợp đồng";
+}
+
+<h2 class="mt-4 text-danger">XÓA HỢP ĐỒNG</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa hợp đồng này không?
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <p><strong>Mã hợp đồng:</strong> @Model.ContractId</p>
+        <p><strong>Khách hàng:</strong> @Model.Customer.FullName</p>
+        <p><strong>Kios:</strong> @Model.Kiosk.KioskName</p>
+        <p><strong>Ngày bắt đầu:</strong> @Model.StartDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Ngày kết thúc:</strong> @Model.EndDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Giá thuê:</strong> @Model.RentalPrice.ToString("N0")</p>
+        <p><strong>Tiền đặt cọc:</strong> @Model.Deposit.ToString("N0")</p>
+        <p><strong>Trạng thái:</strong> @Model.Status</p>
+    </div>
+</div>
+
+@if (Model.Payments.Any())
+{
+    <div class="alert alert-danger mt-3">
+        Hợp đồng này đã có thanh toán nên không thể xóa.
+    </div>
+
+    @Html.ActionLink("Quay lại", "Index",
+            null, new { @class = "btn btn-secondary" })
+}
+else
+{
+    using (Html.BeginForm("Delete", "Contract",
+        new { id = Model.ContractId }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-danger">
+                Xác nhận xóa
+            </button>
+
+            @Html.ActionLink("Hủy", "Index",
+                     null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+}
+

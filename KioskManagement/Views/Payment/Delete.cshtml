@@ -1,0 +1,144 @@
+﻿
+@model KioskManagement.Models.Payment
+
+@{
+    ViewBag.Title = "Xóa thanh toán";
+}
+
+<h2 class="mt-4 mb-3 text-danger">XÓA THANH TOÁN</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+
+        <div class="alert alert-warning">
+            <strong>Cảnh báo!</strong>
+            Bạn có chắc chắn muốn xóa bản ghi thanh toán này không?
+            Thao tác này không thể hoàn tác.
+        </div>
+
+        <div class="panel panel-danger">
+
+            <div class="panel-heading">
+                <strong>THÔNG TIN THANH TOÁN CẦN XÓA</strong>
+            </div>
+
+            <div class="panel-body">
+
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th style="width: 35%;">Mã thanh toán</th>
+                        <td>@Model.PaymentId</td>
+                    </tr>
+
+                    <tr>
+                        <th>Mã hợp đồng</th>
+                        <td>@Model.ContractId</td>
+                    </tr>
+
+                    <tr>
+                        <th>Khách hàng</th>
+                        <td>@Model.Contract.Customer.FullName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Kiosk</th>
+                        <td>@Model.Contract.Kiosk.KioskName</td>
+                    </tr>
+
+                    <tr>
+                        <th>Ngày thanh toán</th>
+                        <td>
+                            @Model.PaymentDate.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Số tiền</th>
+                        <td>
+                            <strong>@Model.Amount.ToString("N0") VNĐ</strong>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Phương thức</th>
+                        <td>
+                            @switch (Model.PaymentMethod)
+                            {
+                                case "Cash":
+                                    <span>Tiền mặt</span>
+                                    break;
+
+                                case "BankTransfer":
+                                    <span>Chuyển khoản</span>
+                                    break;
+
+                                case "Online":
+                                    <span>Thanh toán trực tuyến</span>
+                                    break;
+
+                                default:
+                                    <span>@Model.PaymentMethod</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Trạng thái</th>
+                        <td>
+                            @switch (Model.Status)
+                            {
+                                case "Pending":
+                                    <span class="label label-warning">
+                                        Đang chờ
+                                    </span>
+                                    break;
+
+                                case "Success":
+                                    <span class="label label-success">
+                                        Thành công
+                                    </span>
+                                    break;
+
+                                case "Failed":
+                                    <span class="label label-danger">
+                                        Thất bại
+                                    </span>
+                                    break;
+
+                                default:
+                                    <span>@Model.Status</span>
+                                    break;
+                            }
+                        </td>
+                    </tr>
+
+                </table>
+
+                @using (Html.BeginForm(
+                    "Delete",
+                    "Payment",
+                    new { id = Model.PaymentId },
+                    FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        Xác nhận xóa
+                    </button>
+
+                    @Html.ActionLink(
+                             "Hủy",
+                             "Index",
+                             null,
+                             new { @class = "btn btn-default" })
+                }
+
+            </div>
+        </div>
+
+    </div>
+</div>

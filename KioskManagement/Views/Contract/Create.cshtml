@@ -1,0 +1,108 @@
+﻿
+@model KioskManagement.Models.Contract
+
+@{
+    ViewBag.Title = "Thêm hợp đồng";
+}
+
+<h2 class="mt-4">THÊM HỢP ĐỒNG</h2>
+<hr />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CustomerId, "Khách hàng")
+
+            @Html.DropDownListFor(m => m.CustomerId,
+                     (SelectList)ViewBag.CustomerId,
+                     "-- Chọn khách hàng --",
+                     new { @class = "form-control" })
+
+            @Html.ValidationMessageFor(m => m.CustomerId, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.KioskId, "Kios")
+
+            @Html.DropDownListFor(m => m.KioskId,
+                     (SelectList)ViewBag.KioskId,
+                     "-- Chọn Kios --",
+                     new { @class = "form-control" })
+
+            @Html.ValidationMessageFor(m => m.KioskId, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartDate, "Ngày bắt đầu")
+
+            @Html.TextBoxFor(m => m.StartDate, "{0:yyyy-MM-dd}",
+                     new { @class = "form-control", type = "date" })
+
+            @Html.ValidationMessageFor(m => m.StartDate, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.EndDate, "Ngày kết thúc")
+
+            @Html.TextBoxFor(m => m.EndDate, "{0:yyyy-MM-dd}",
+                     new { @class = "form-control", type = "date" })
+
+            @Html.ValidationMessageFor(m => m.EndDate, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.RentalPrice, "Giá thuê")
+
+            @Html.TextBoxFor(m => m.RentalPrice,
+                     new { @class = "form-control", type = "number", min = "1", step = "1000" })
+
+            @Html.ValidationMessageFor(m => m.RentalPrice, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Deposit, "Tiền đặt cọc")
+
+            @Html.TextBoxFor(m => m.Deposit,
+                     new { @class = "form-control", type = "number", min = "0", step = "1000" })
+
+            @Html.ValidationMessageFor(m => m.Deposit, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Status, "Trạng thái")
+
+            @Html.DropDownListFor(m => m.Status,
+                     new SelectList(
+                         new[]
+                         {
+                        new { Value = "Pending", Text = "Chờ xác nhận" },
+                        new { Value = "Active", Text = "Đang hiệu lực" },
+                        new { Value = "Completed", Text = "Đã hoàn thành" },
+                        new { Value = "Cancelled", Text = "Đã hủy" }
+                             },
+                         "Value", "Text"),
+                     "-- Chọn trạng thái --",
+                     new { @class = "form-control" })
+
+            @Html.ValidationMessageFor(m => m.Status, "",
+                     new { @class = "text-danger" })
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Lưu hợp đồng
+        </button>
+
+        @Html.ActionLink("Quay lại", "Index",
+                 null, new { @class = "btn btn-secondary" })
+    </div>
+}

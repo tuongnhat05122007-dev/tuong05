@@ -1,0 +1,86 @@
+﻿
+@model KioskManagement.Models.Project
+
+@{
+    ViewBag.Title = "Xóa dự án";
+}
+
+<h2 class="mt-4 mb-3 text-danger">XÓA DỰ ÁN</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa dự án này không?
+</div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+        Thông tin dự án cần xóa
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            <strong>Mã dự án:</strong>
+            @Model.ProjectId
+        </p>
+
+        <p>
+            <strong>Tên dự án:</strong>
+            @Model.ProjectName
+        </p>
+
+        <p>
+            <strong>Địa điểm:</strong>
+            @Model.Location
+        </p>
+
+        <p>
+            <strong>Ngân sách:</strong>
+            @Model.Budget.ToString("N0") VNĐ
+        </p>
+
+        <p>
+            <strong>Số lượng Kios:</strong>
+            @Model.Kiosks.Count
+        </p>
+
+    </div>
+
+</div>
+
+@if (Model.Kiosks.Any())
+{
+    <div class="alert alert-danger">
+        Dự án này đang có Kios nên không thể xóa.
+        Vui lòng xử lý các Kios liên quan trước.
+    </div>
+
+    @Html.ActionLink(
+            "Quay lại",
+            "Index",
+            null,
+            new { @class = "btn btn-secondary" }
+        )
+}
+else
+{
+    using (Html.BeginForm(
+        "Delete",
+        "Project",
+        new { id = Model.ProjectId },
+        FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn btn-danger">
+            Xác nhận xóa
+        </button>
+
+        @Html.ActionLink(
+                 "Hủy",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary" }
+             )
+    }
+}

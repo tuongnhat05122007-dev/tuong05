@@ -1,0 +1,53 @@
+﻿
+
+@model KioskManagement.Models.MaintenanceRequest
+
+@{
+    ViewBag.Title = "Chi tiết yêu cầu bảo trì";
+}
+
+<h2>CHI TIẾT YÊU CẦU BẢO TRÌ</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Mã yêu cầu</th>
+        <td>@Model.RequestId</td>
+    </tr>
+
+    <tr>
+        <th>Kiosk</th>
+        <td>@Model.Kiosk.KioskName</td>
+    </tr>
+
+    <tr>
+        <th>Khách hàng</th>
+        <td>@Model.Customer.FullName</td>
+    </tr>
+
+    <tr>
+        <th>Ngày yêu cầu</th>
+        <td>@Model.RequestDate.ToString("dd/MM/yyyy HH:mm")</td>
+    </tr>
+
+    <tr>
+        <th>Nội dung</th>
+        <td>@Model.Description</td>
+    </tr>
+
+    <tr>
+        <th>Trạng thái</th>
+        <td>@Model.Status</td>
+    </tr>
+</table>
+
+@Html.ActionLink(
+    "Chỉnh sửa",
+    "Edit",
+    new { id = Model.RequestId },
+    new { @class = "btn btn-warning" })
+
+@Html.ActionLink(
+    "Quay lại",
+    "Index",
+    null,
+    new { @class = "btn btn-default" })

@@ -1,0 +1,80 @@
+﻿
+@model KioskManagement.Models.Area
+
+@{
+    ViewBag.Title = "Xóa khu vực";
+}
+
+<h2 class="mt-4 mb-3 text-danger">XÓA KHU VỰC</h2>
+
+<div class="alert alert-warning">
+    <strong>Lưu ý!</strong>
+    Bạn có chắc chắn muốn xóa khu vực này không?
+</div>
+
+<div class="card mb-3">
+
+    <div class="card-header">
+        Thông tin khu vực cần xóa
+    </div>
+
+    <div class="card-body">
+
+        <p>
+            <strong>Mã khu vực:</strong>
+            @Model.AreaId
+        </p>
+
+        <p>
+            <strong>Tên khu vực:</strong>
+            @Model.AreaName
+        </p>
+
+        <p>
+            <strong>Địa điểm:</strong>
+            @Model.Location
+        </p>
+
+        <p>
+            <strong>Số lượng Kios:</strong>
+            @Model.Kiosks.Count
+        </p>
+
+    </div>
+
+</div>
+
+@if (Model.Kiosks.Any())
+{
+    <div class="alert alert-danger">
+        Khu vực này đang có Kios nên không thể xóa.
+        Hãy xử lý các Kios trước khi xóa khu vực.
+    </div>
+
+    @Html.ActionLink(
+            "Quay lại",
+            "Index",
+            null,
+            new { @class = "btn btn-secondary" }
+        )
+}
+else
+{
+    using (Html.BeginForm("Delete", "Area",
+                          new { id = Model.AreaId },
+                          FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <button type="submit" class="btn btn-danger">
+            Xác nhận xóa
+        </button>
+
+        @Html.ActionLink(
+                 "Hủy",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary" }
+             )
+    }
+}

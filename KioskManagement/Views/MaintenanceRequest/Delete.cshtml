@@ -1,0 +1,55 @@
+﻿
+
+@model KioskManagement.Models.MaintenanceRequest
+
+@{
+    ViewBag.Title = "Xóa yêu cầu bảo trì";
+}
+
+<h2>XÓA YÊU CẦU BẢO TRÌ</h2>
+
+<div class="alert alert-warning">
+    Bạn có chắc chắn muốn xóa yêu cầu bảo trì này không?
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Mã yêu cầu</th>
+        <td>@Model.RequestId</td>
+    </tr>
+
+    <tr>
+        <th>Kiosk</th>
+        <td>@Model.Kiosk.KioskName</td>
+    </tr>
+
+    <tr>
+        <th>Khách hàng</th>
+        <td>@Model.Customer.FullName</td>
+    </tr>
+
+    <tr>
+        <th>Nội dung</th>
+        <td>@Model.Description</td>
+    </tr>
+
+    <tr>
+        <th>Trạng thái</th>
+        <td>@Model.Status</td>
+    </tr>
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <button type="submit" class="btn btn-danger">
+        Xác nhận xóa
+    </button>
+
+    @Html.ActionLink(
+        "Hủy",
+        "Index",
+        null,
+        new { @class = "btn btn-default" })
+}

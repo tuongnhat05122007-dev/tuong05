@@ -1,0 +1,136 @@
+﻿
+@model KioskManagement.Models.Project
+
+@{
+    ViewBag.Title = "Chi tiết dự án";
+}
+
+<h2 class="mt-4 mb-3">CHI TIẾT DỰ ÁN</h2>
+
+<div class="card mb-4">
+
+    <div class="card-header bg-dark text-white">
+        Thông tin dự án
+    </div>
+
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">Mã dự án</dt>
+            <dd class="col-sm-9">@Model.ProjectId</dd>
+
+            <dt class="col-sm-3">Tên dự án</dt>
+            <dd class="col-sm-9">@Model.ProjectName</dd>
+
+            <dt class="col-sm-3">Địa điểm</dt>
+            <dd class="col-sm-9">@Model.Location</dd>
+
+            <dt class="col-sm-3">Ngày bắt đầu</dt>
+            <dd class="col-sm-9">
+                @Model.StartDate.ToString("dd/MM/yyyy")
+            </dd>
+
+            <dt class="col-sm-3">Ngày kết thúc</dt>
+            <dd class="col-sm-9">
+                @(Model.EndDate.HasValue
+                    ? Model.EndDate.Value.ToString("dd/MM/yyyy")
+                    : "Chưa xác định")
+            </dd>
+
+            <dt class="col-sm-3">Ngân sách</dt>
+            <dd class="col-sm-9">
+                @Model.Budget.ToString("N0") VNĐ
+            </dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @switch (Model.Status)
+                {
+                    case "Planning":
+                        <span>Đang lên kế hoạch</span>
+                        break;
+
+                    case "InProgress":
+                        <span>Đang thực hiện</span>
+                        break;
+
+                    case "Completed":
+                        <span>Đã hoàn thành</span>
+                        break;
+
+                    case "Cancelled":
+                        <span>Đã hủy</span>
+                        break;
+
+                    default:
+                        <span>@Model.Status</span>
+                        break;
+                }
+            </dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">
+                @(string.IsNullOrEmpty(Model.Description)
+                    ? "Chưa có mô tả"
+                    : Model.Description)
+            </dd>
+
+        </dl>
+
+    </div>
+</div>
+
+<h4>Danh sách Kios thuộc dự án</h4>
+
+<table class="table table-bordered table-striped">
+
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã Kios</th>
+            <th>Tên Kios</th>
+            <th>Diện tích</th>
+            <th>Giá thuê</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model.Kiosks != null && Model.Kiosks.Any())
+        {
+            foreach (var kiosk in Model.Kiosks)
+            {
+                <tr>
+                    <td>@kiosk.KioskId</td>
+                    <td>@kiosk.KioskName</td>
+                    <td>@kiosk.AreaSize m²</td>
+                    <td>@kiosk.RentalPrice.ToString("N0") VNĐ</td>
+                    <td>@kiosk.Status</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">
+                    Dự án chưa có Kios.
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@Html.ActionLink(
+    "Chỉnh sửa",
+    "Edit",
+    new { id = Model.ProjectId },
+    new { @class = "btn btn-warning" }
+)
+
+@Html.ActionLink(
+    "Quay lại",
+    "Index",
+    null,
+    new { @class = "btn btn-secondary" }
+)

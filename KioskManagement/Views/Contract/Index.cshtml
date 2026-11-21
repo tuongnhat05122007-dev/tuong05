@@ -1,0 +1,132 @@
+﻿
+@model IEnumerable<KioskManagement.Models.Contract>
+
+@{
+    ViewBag.Title = "Quản lý hợp đồng";
+}
+
+<h2 class="mt-4 mb-3">QUẢN LÝ HỢP ĐỒNG</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-8">
+        @using (Html.BeginForm("Index", "Contract", FormMethod.Get))
+        {
+            <div class="form-row">
+                <div class="col-md-6 mb-2">
+                    <input type="text"
+                           name="search"
+                           value="@ViewBag.Search"
+                           class="form-control"
+                           placeholder="Tìm theo tên khách hàng hoặc Kios..." />
+                </div>
+
+                <div class="col-md-4 mb-2">
+                    @Html.DropDownList(
+                             "status",
+                             (SelectList)ViewBag.StatusList,
+                             "Tất cả trạng thái",
+                             new { @class = "form-control" })
+                </div>
+
+                <div class="col-md-2 mb-2">
+                    <button type="submit" class="btn btn-primary">
+                        Tìm kiếm
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4 text-right">
+        @Html.ActionLink("+ Thêm hợp đồng", "Create", "Contract",
+                 null, new { @class = "btn btn-success" })
+    </div>
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã HĐ</th>
+            <th>Khách hàng</th>
+            <th>Kios</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Giá thuê</th>
+            <th>Trạng thái</th>
+            <th style="width: 190px;">Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ContractId</td>
+                    <td>@(item.Customer != null ? item.Customer.FullName : "")</td>
+                    <td>@(item.Kiosk != null ? item.Kiosk.KioskName : "")</td>
+                    <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>@item.RentalPrice.ToString("N0")</td>
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case "Pending":
+                                <span>Chờ xác nhận</span>
+                                break;
+                            case "Active":
+                                <span>Đang hiệu lực</span>
+                                break;
+                            case "Completed":
+                                <span>Đã hoàn thành</span>
+                                break;
+                            case "Cancelled":
+                                <span>Đã hủy</span>
+                                break;
+                            default:
+                                <span>@item.Status</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "Details",
+                                 new { id = item.ContractId },
+                                 new { @class = "btn btn-info btn-sm" })
+
+                        @Html.ActionLink("Sửa", "Edit",
+                                 new { id = item.ContractId },
+                                 new { @class = "btn btn-warning btn-sm" })
+
+                        @Html.ActionLink("Xóa", "Delete",
+                                 new { id = item.ContractId },
+                                 new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">
+                    Không tìm thấy hợp đồng nào.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

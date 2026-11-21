@@ -1,0 +1,150 @@
+﻿
+@model IEnumerable<KioskManagement.Models.Project>
+
+@{
+    ViewBag.Title = "Quản lý dự án";
+}
+
+<h2 class="mt-4 mb-3">QUẢN LÝ DỰ ÁN</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<p>
+    @Html.ActionLink(
+            "Thêm dự án mới",
+            "Create",
+            null,
+            new { @class = "btn btn-primary" }
+        )
+</p>
+
+@using (Html.BeginForm("Index", "Project", FormMethod.Get))
+{
+    <div class="form-inline mb-3">
+        <input type="text"
+               name="search"
+               value="@Request.QueryString["search"]"
+               class="form-control mr-2"
+               placeholder="Nhập tên hoặc địa điểm dự án..." />
+
+        <button type="submit" class="btn btn-success">
+            Tìm kiếm
+        </button>
+
+        @Html.ActionLink(
+                 "Làm mới",
+                 "Index",
+                 null,
+                 new { @class = "btn btn-secondary ml-2" }
+             )
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã dự án</th>
+            <th>Tên dự án</th>
+            <th>Địa điểm</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Ngân sách</th>
+            <th>Trạng thái</th>
+            <th>Số Kios</th>
+            <th>Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProjectId</td>
+                    <td>@item.ProjectName</td>
+                    <td>@item.Location</td>
+                    <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+
+                    <td>
+                        @(item.EndDate.HasValue
+                            ? item.EndDate.Value.ToString("dd/MM/yyyy")
+                            : "Chưa xác định")
+                    </td>
+
+                    <td>@item.Budget.ToString("N0") VNĐ</td>
+
+                    <td>
+                        @switch (item.Status)
+                        {
+                            case "Planning":
+                                <span>Đang lên kế hoạch</span>
+                                break;
+
+                            case "InProgress":
+                                <span>Đang thực hiện</span>
+                                break;
+
+                            case "Completed":
+                                <span>Đã hoàn thành</span>
+                                break;
+
+                            case "Cancelled":
+                                <span>Đã hủy</span>
+                                break;
+
+                            default:
+                                <span>@item.Status</span>
+                                break;
+                        }
+                    </td>
+
+                    <td>@item.Kiosks.Count</td>
+
+                    <td>
+                        @Html.ActionLink(
+                                 "Chi tiết",
+                                 "Details",
+                                 new { id = item.ProjectId },
+                                 new { @class = "btn btn-info btn-sm" }
+                             )
+
+                        @Html.ActionLink(
+                                 "Sửa",
+                                 "Edit",
+                                 new { id = item.ProjectId },
+                                 new { @class = "btn btn-warning btn-sm" }
+                             )
+
+                        @Html.ActionLink(
+                                 "Xóa",
+                                 "Delete",
+                                 new { id = item.ProjectId },
+                                 new { @class = "btn btn-danger btn-sm" }
+                             )
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center">
+                    Không tìm thấy dự án nào.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

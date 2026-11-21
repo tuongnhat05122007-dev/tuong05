@@ -1,0 +1,43 @@
+﻿body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 25px;
+}
+
+h2 {
+    color: #2c3e50;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+.table {
+    background-color: white;
+}
+
+    .table th {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+.btn {
+    border-radius: 5px;
+    margin: 3px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}

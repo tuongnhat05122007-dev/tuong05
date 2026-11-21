@@ -1,0 +1,100 @@
+﻿
+@model IEnumerable<KioskManagement.Models.Customer>
+
+@{
+    ViewBag.Title = "Quản lý khách hàng";
+}
+
+<h2 class="mt-4 mb-3">QUẢN LÝ KHÁCH HÀNG</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-8">
+        @using (Html.BeginForm("Index", "Customer", FormMethod.Get))
+        {
+            <div class="input-group">
+                <input type="text"
+                       name="search"
+                       value="@ViewBag.Search"
+                       class="form-control"
+                       placeholder="Tìm theo tên, số điện thoại hoặc email..." />
+
+                <button type="submit" class="btn btn-primary">
+                    Tìm kiếm
+                </button>
+            </div>
+        }
+    </div>
+
+    <div class="col-md-4 text-right">
+        @Html.ActionLink(
+                 " + Thêm khách hàng",
+                 "Create",
+                 "Customer",
+                 null,
+                 new { @class = "btn btn-success" })
+    </div>
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Mã KH</th>
+            <th>Họ tên</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Ngày tạo</th>
+            <th style="width: 210px;">Chức năng</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.CustomerId</td>
+                    <td>@item.FullName</td>
+                    <td>@item.Phone</td>
+                    <td>@(String.IsNullOrEmpty(item.Email) ? "Chưa có" : item.Email)</td>
+                    <td>@item.CreatedAt.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @Html.ActionLink("Chi tiết", "Details",
+                                 new { id = item.CustomerId },
+                                 new { @class = "btn btn-info btn-sm" })
+
+                        @Html.ActionLink("Sửa", "Edit",
+                                 new { id = item.CustomerId },
+                                 new { @class = "btn btn-warning btn-sm" })
+
+                        @Html.ActionLink("Xóa", "Delete",
+                                 new { id = item.CustomerId },
+                                 new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center">
+                    Không tìm thấy khách hàng nào.
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

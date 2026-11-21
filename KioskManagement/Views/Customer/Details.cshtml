@@ -1,0 +1,56 @@
+﻿
+@model KioskManagement.Models.Customer
+
+@{
+    ViewBag.Title = "Chi tiết khách hàng";
+}
+
+<h2 class="mt-4">CHI TIẾT KHÁCH HÀNG</h2>
+<hr />
+
+<div class="card">
+    <div class="card-header bg-dark text-white">
+        Thông tin khách hàng
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-md-3">Mã khách hàng</dt>
+            <dd class="col-md-9">@Model.CustomerId</dd>
+
+            <dt class="col-md-3">Họ và tên</dt>
+            <dd class="col-md-9">@Model.FullName</dd>
+
+            <dt class="col-md-3">Số điện thoại</dt>
+            <dd class="col-md-9">@Model.Phone</dd>
+
+            <dt class="col-md-3">Email</dt>
+            <dd class="col-md-9">
+                @(String.IsNullOrEmpty(Model.Email) ? "Chưa có" : Model.Email)
+            </dd>
+
+            <dt class="col-md-3">Địa chỉ</dt>
+            <dd class="col-md-9">
+                @(String.IsNullOrEmpty(Model.Address) ? "Chưa có" : Model.Address)
+            </dd>
+
+            <dt class="col-md-3">Ngày tạo</dt>
+            <dd class="col-md-9">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+            <dt class="col-md-3">Số hợp đồng</dt>
+            <dd class="col-md-9">@Model.Contracts.Count</dd>
+
+            <dt class="col-md-3">Yêu cầu bảo trì</dt>
+            <dd class="col-md-9">@Model.MaintenanceRequests.Count</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    @Html.ActionLink("Chỉnh sửa", "Edit",
+            new { id = Model.CustomerId },
+            new { @class = "btn btn-warning" })
+
+    @Html.ActionLink("Quay lại", "Index",
+            null, new { @class = "btn btn-secondary" })
+</div>
